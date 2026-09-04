@@ -34,6 +34,14 @@ export const Route = createFileRoute("/_authenticated/workouts/new")({
   component: NewWorkoutPage,
 });
 
+type FormErrors = {
+  title?: string;
+  workoutType?: string;
+  duration?: string;
+  workoutDate?: string;
+  calories?: string;
+};
+
 function today() {
   return new Date().toISOString().slice(0, 10);
 }
@@ -49,12 +57,12 @@ function NewWorkoutPage() {
   const [workoutDate, setWorkoutDate] = useState(today());
   const [calories, setCalories] = useState("");
   const [notes, setNotes] = useState("");
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState<FormErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   function validate() {
-    const next: Record<string, string> = {};
+    const next: FormErrors = {};
     if (title.trim().length < 2) next.title = "Numele antrenamentului este obligatoriu.";
     if (!workoutType) next.workoutType = "Alege tipul antrenamentului.";
     const dur = Number(duration);

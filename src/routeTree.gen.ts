@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedWorkoutsIndexRouteImport } from './routes/_authenticated/workouts.index'
+import { Route as AuthenticatedWorkoutsWorkoutIdRouteImport } from './routes/_authenticated/workouts.$workoutId'
 import { Route as AuthenticatedWorkoutsNewRouteImport } from './routes/_authenticated/workouts.new'
 
 const IndexRoute = IndexRouteImport.update({
@@ -35,6 +36,12 @@ const AuthenticatedWorkoutsIndexRoute =
     path: '/workouts/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedWorkoutsWorkoutIdRoute =
+  AuthenticatedWorkoutsWorkoutIdRouteImport.update({
+    id: '/workouts/$workoutId',
+    path: '/workouts/$workoutId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedWorkoutsNewRoute =
   AuthenticatedWorkoutsNewRouteImport.update({
     id: '/workouts/new',
@@ -45,12 +52,14 @@ const AuthenticatedWorkoutsNewRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/workouts/$workoutId': typeof AuthenticatedWorkoutsWorkoutIdRoute
   '/workouts/new': typeof AuthenticatedWorkoutsNewRoute
   '/workouts/': typeof AuthenticatedWorkoutsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/workouts/$workoutId': typeof AuthenticatedWorkoutsWorkoutIdRoute
   '/workouts/new': typeof AuthenticatedWorkoutsNewRoute
   '/workouts': typeof AuthenticatedWorkoutsIndexRoute
 }
@@ -59,19 +68,23 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/workouts/$workoutId': typeof AuthenticatedWorkoutsWorkoutIdRoute
   '/_authenticated/workouts/new': typeof AuthenticatedWorkoutsNewRoute
   '/_authenticated/workouts/': typeof AuthenticatedWorkoutsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/workouts/new' | '/workouts/'
+  fullPaths:
+    '/' | '/dashboard' | '/workouts/$workoutId' | '/workouts/new' | '/workouts/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/workouts/new' | '/workouts'
+  to:
+    '/' | '/dashboard' | '/workouts/$workoutId' | '/workouts/new' | '/workouts'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/_authenticated/dashboard'
+    | '/_authenticated/workouts/$workoutId'
     | '/_authenticated/workouts/new'
     | '/_authenticated/workouts/'
   fileRoutesById: FileRoutesById
@@ -111,6 +124,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedWorkoutsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/workouts/$workoutId': {
+      id: '/_authenticated/workouts/$workoutId'
+      path: '/workouts/$workoutId'
+      fullPath: '/workouts/$workoutId'
+      preLoaderRoute: typeof AuthenticatedWorkoutsWorkoutIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/workouts/new': {
       id: '/_authenticated/workouts/new'
       path: '/workouts/new'
@@ -123,12 +143,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedWorkoutsWorkoutIdRoute: typeof AuthenticatedWorkoutsWorkoutIdRoute
   AuthenticatedWorkoutsNewRoute: typeof AuthenticatedWorkoutsNewRoute
   AuthenticatedWorkoutsIndexRoute: typeof AuthenticatedWorkoutsIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedWorkoutsWorkoutIdRoute: AuthenticatedWorkoutsWorkoutIdRoute,
   AuthenticatedWorkoutsNewRoute: AuthenticatedWorkoutsNewRoute,
   AuthenticatedWorkoutsIndexRoute: AuthenticatedWorkoutsIndexRoute,
 }
